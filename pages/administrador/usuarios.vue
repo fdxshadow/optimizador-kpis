@@ -14,7 +14,6 @@ export default {
                 {text:'Nombre', value:'nombre'},
                 {text:'Email', value:'email'},
                 {text:'Tipo', value:'tipo'},
-                {text:'Password', value:'password'},
             ],
             usuarios:[]
         }

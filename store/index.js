@@ -1,40 +1,30 @@
 
 //Mi store o almacenamiento
-/*export const state = () => {
-    auth: false
-    tipo: null
-    token: null
+export const state = () => {
+    obraSelect: null
 }
 //Acceso a los datos
-export const getters = {
-    getAuth(state) {
-        return state.auth;
-    },
-    getTipo(state) {
-        return state.tipo;
+/*export const getters = {
+    getObra(state) {
+        return state.obraSelect;
     }
 }*/
 
 
 //Acciones, metodos publicos para llamar el mutations
-/*export const actions = {
-    login({ commit },payload) {
-        commit('setAuth',payload);
+export const actions = {
+    selectObra({ commit },payload) {
+        commit('setObra',payload.obra);
+    },
+    deleteObra({commit}) {
+        commit('setObra',null);
     }
-}*/
+}
 
 
 //modificar el almacenamiento
-/*export const mutations = {
-    login(state, payload){
-        state.auth = true;
-        state.tipo = payload.usuario.tipo
-        state.token = payload.usuario.token
+export const mutations = {
+    setObra(state,obra) {
+        state.obraSelect = obra;
     },
-    logout(state) {
-        state.auth = false;
-        state.tipo = null
-        state.token = null
-    }
-
-}*/
+}

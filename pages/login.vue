@@ -1,4 +1,4 @@
-<<template>
+<template>
   <v-app>
       <v-container>
       <v-row justify="center">
@@ -6,7 +6,7 @@
           <v-card>
               <v-card-title class="justify-center">Logo</v-card-title>
               <v-card-text>
-                  <v-form
+                  <v-form>
                   <v-text-field 
               v-model="loginEmail" 
               label="Email" 

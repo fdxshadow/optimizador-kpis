@@ -44,7 +44,7 @@
     >
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
       <v-spacer />
-        <v-btn class="white--text"  @click="$auth.logout()" outlined v-if="$auth.loggedIn">
+        <v-btn class="white--text"  @click="logout" outlined v-if="$auth.loggedIn">
        <v-icon>mdi-logout</v-icon>Cerrar Sesion</v-btn>
     </v-app-bar>
     <v-main>
@@ -248,6 +248,10 @@ methods:{
       default:
         break;
     }
+  },
+  logout(){
+     this.$store.dispatch('deleteObra');
+     this.$auth.logout();
   }
 }
 }

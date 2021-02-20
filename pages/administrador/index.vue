@@ -178,7 +178,7 @@
                 v-model="empresaForObra"
                 item-text="nombre"
                 item-value="id"
-                label="Obra*"
+                label="Empresa*"
                 :rules="rulesRequired">
               </v-select>
               </v-col>
