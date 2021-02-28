@@ -37,7 +37,7 @@
 export default {
     layout: "login",
     auth: false,
-    middleware: 'authenticated',
+    //middleware: 'authenticated',
     data () {
     return {
       showPassword: false,
