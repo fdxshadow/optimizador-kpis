@@ -70,73 +70,20 @@
         </v-card-title>
         <v-card-text>
           <v-container>
+            <v-form ref="empresaForm" v-model="empresaValid" lazy-validation>
             <v-row>
               <v-col
                 cols="12"
-                sm="6"
-                md="4"
               >
                 <v-text-field
-                  label="Legal first name*"
+                  label="Nombre empresa*"
+                  v-model="empresaNombre"
+                  :rules="rulesRequired"
                   required
                 ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-                md="4"
-              >
-                <v-text-field
-                  label="Legal middle name"
-                  hint="example of helper text only on focus"
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-                md="4"
-              >
-                <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="Email*"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="Password*"
-                  type="password"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-              >
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col
-                cols="12"
-                sm="6"
-              >
-                <v-autocomplete
-                  :items="['Skiing', 'Ice hockey', 'Soccer', 'Basketball', 'Hockey', 'Reading', 'Writing', 'Coding', 'Basejump']"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
               </v-col>
             </v-row>
+            </v-form>
           </v-container>
           <small>*indicates required field</small>
         </v-card-text>
@@ -151,8 +98,9 @@
           </v-btn>
           <v-btn
             color="blue darken-1"
+            :disabled="!empresaValid"
             text
-            @click="dialogAgregar = false"
+            @click="agregarEmpresa"
           >
             Guardar
           </v-btn>
@@ -178,6 +126,11 @@ export default {
       miniVariant: false,
       right: true,
       rightDrawer: true,
+      empresaNombre:'',
+      empresaValid:false,
+       rulesRequired:[
+          v => !!v  || 'Este campo es requerido'
+        ],
     }},
 methods:{
   getItemsNavBar() {
@@ -225,7 +178,7 @@ methods:{
          {
           icon: 'mdi-account',
           title: 'Curva S',
-          to: '/gerente/avance_tipo',
+          to: '/gerente/empresa/curva_s',
         },
          {
           icon: 'mdi-account',
@@ -238,7 +191,7 @@ methods:{
           to: '/gerente/tareas',
         }]
         break;
-      case 'serie':
+      case 'supervisor':
          return [{
           icon: 'mdi-home',
           title: 'Mis Tareas',
@@ -252,6 +205,16 @@ methods:{
   logout(){
      this.$store.dispatch('deleteObra');
      this.$auth.logout();
+  },
+  agregarEmpresa(){
+    console.log("guardar empresa");
+    this.$axios.post('/empresas',{nombre:this.empresaNombre}).then(resp=>{
+      console.log(resp);
+    }).catch(e=>{
+      console.log(e);
+
+    })
+
   }
 }
 }

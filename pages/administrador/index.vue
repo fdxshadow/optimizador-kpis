@@ -2,7 +2,7 @@
 <v-container class="my-5">
     <v-layout row wrap>
        <v-flex xs12 sm12 md4 lg4 xl4>
-            <v-card class="ma-3" @click="modalObras = true">
+            <v-card class="ma-3" @click=" showModalObras">
                 <v-list-item>
                     <v-list-item-avatar tile class="mt-n7">
                         <v-sheet color="info" width="100" height="100" elevation="10">
@@ -268,7 +268,7 @@ export default {
       }
     },
     created() {
-      this.getEmpresas();
+      //this.getEmpresas();
       //this.getObras();
     },
      methods: {
@@ -311,6 +311,10 @@ export default {
               console.log(err.response.data);
             });
           }
+        },
+        showModalObras(){
+          this.modalObras = true;
+          this.getEmpresas();
         }
     }
     
