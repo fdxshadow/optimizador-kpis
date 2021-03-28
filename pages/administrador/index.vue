@@ -280,7 +280,7 @@ export default {
       }
     },
     created() {
-      //this.getEmpresas();
+      this.getEmpresas();
       //this.getObras();
     },
      methods: {
