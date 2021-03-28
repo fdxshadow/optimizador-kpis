@@ -29,6 +29,9 @@
           </v-card>
         </v-col>
       </v-row>
+      <v-snackbar v-model="loginError" :timeout="2000" color="red" top> 
+        {{this.messageError}}
+      </v-snackbar>
     </v-container>
   </v-app>
 </template>
@@ -43,6 +46,8 @@ export default {
       showPassword: false,
       loginEmail: '',
       loginPassword: '',
+      loginError:false,
+      messageError:''
     }
   },
   methods: {
@@ -52,7 +57,9 @@ export default {
         this.$router.push(`/${response.data.tipo}`);
         //this.$auth.setUser(response.data);
       }).catch(error=>{
-        console.error(error);
+        this.messageError = error.response.data.message;
+        this.loginError = true;
+        console.log(error.response.data.message);
       });
     }
 

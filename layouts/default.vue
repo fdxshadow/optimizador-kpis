@@ -13,7 +13,7 @@
                     <v-avatar size="100">
                             <img src="/img1.png" alt="">
                     </v-avatar>
-                    <p class="white--text subheading mt-1 text-center">{{this.$auth.state.user.email}}</p>
+                    <p class="white--text subheading mt-1 text-center">Hola {{this.$auth.state.user.nombre}}</p>
                </v-flex>
                <v-flex class="mt-4 mb-4" v-if="this.$auth.state.user.tipo=='administrador'">
                  <v-btn @click="dialogAgregar = true" color="primary">Agregar Empresa</v-btn>
@@ -107,6 +107,14 @@
         </v-card-actions>
       </v-card>
     </v-dialog>
+
+     <v-snackbar v-model="addEmpresaSuccess" :timeout="2000" color="success" top> 
+        Empresa creada correctamente
+      </v-snackbar>
+
+      <v-snackbar v-model="addEmpresaError" :timeout="2000" color="error" top> 
+        {{this.messageError}}
+      </v-snackbar>
   <!--Cierre Dialogo Agregar -->
   </v-app>
 
@@ -128,6 +136,9 @@ export default {
       rightDrawer: true,
       empresaNombre:'',
       empresaValid:false,
+      addEmpresaSuccess:false,
+      addEmpresaError:false,
+      messageError:'',
        rulesRequired:[
           v => !!v  || 'Este campo es requerido'
         ],
@@ -163,7 +174,7 @@ methods:{
         return [{
           icon: 'mdi-home',
           title: 'Home',
-          to: '/gerente',
+          to: `/gerente/empresa/${this.$store.state.obraSelect}`,
         },
         {
           icon: 'mdi-account',
@@ -178,7 +189,7 @@ methods:{
          {
           icon: 'mdi-account',
           title: 'Curva S',
-          to: '/gerente/empresa/curva_s',
+          to: '/gerente/curva_s',
         },
          {
           icon: 'mdi-account',
@@ -209,10 +220,12 @@ methods:{
   agregarEmpresa(){
     console.log("guardar empresa");
     this.$axios.post('/empresas',{nombre:this.empresaNombre}).then(resp=>{
+      this.dialogAgregar = false;
+      this.addEmpresaSuccess = true;
       console.log(resp);
     }).catch(e=>{
-      console.log(e);
-
+      this.addEmpresaSuccess = true;
+      this.messageSuccess = e.response.data.message;
     })
 
   }

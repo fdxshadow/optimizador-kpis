@@ -20,7 +20,7 @@
 
 <script>
 export default {
-  middleware: 'authenticated',
+  middleware: ['authenticated','gerente'],
     data () {
         return {
             obraInfo:{

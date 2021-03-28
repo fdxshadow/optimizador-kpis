@@ -90,6 +90,15 @@
         </v-card-text>
       </v-card>
     </v-dialog>
+
+      <v-snackbar v-model="success" :timeout="2000" color="primary" top> 
+        {{this.messageSuccess}}
+      </v-snackbar>
+
+       <v-snackbar v-model="error" :timeout="2000" color="red" top> 
+        {{this.messageError}}
+      </v-snackbar>
+
     </v-container>
 </template>
 <script>
@@ -100,6 +109,10 @@ export default {
             planiValid:false,
             planificacion:{},
             loading:false,
+            success:false,
+            error:false,
+            messageSuccess:'',
+            messageError:'',
             empresas:[],
             obras:[],
             rulesRequired:[
@@ -132,9 +145,13 @@ export default {
                 this.$axios.post("/planificacion",formData).then(resp=>{
                     console.log(resp);
                     this.loading = false;
+                    this.success = true;
+                    this.messageSuccess = "Planifiacion cargada correctamente";
                 }).catch(err=>{
                     console.log(err);
                     this.loading = false;
+                    this.error = true;
+                    this.messageError = err.response.data.message;
                 });
             }
         },

@@ -234,6 +234,14 @@
       </v-card>
      </v-dialog>
 
+      <v-snackbar v-model="success" :timeout="2000" color="primary" top> 
+        {{this.messageSuccess}}
+      </v-snackbar>
+
+       <v-snackbar v-model="error" :timeout="2000" color="red" top> 
+        {{this.messageError}}
+      </v-snackbar>
+
     <!--Fin Usuarios -->
 </v-container>
 </template>
@@ -252,6 +260,10 @@ export default {
         userValid:false,
         obraValid:false,
         empresaForObra:'',
+        success:false,
+        error:false,
+        messageSuccess:'',
+        messageError:'',
         rulesRequired:[
           v => !!v  || 'Este campo es requerido'
         ],
@@ -292,9 +304,13 @@ export default {
             let {nombre,email,password,tipo,obras} = this.usuario;
             this.$axios.post("usuarios/registro",{nombre,email,password,tipo,obras}).then(resp=>{
                 this.modalUsuario = false;
+                this.success = true;
+                this.messageSuccess = "Usuario Creado";
                 this.$refs.userform.reset();
                 this.$refs.userform.resetValidation();
             }).catch(err=>{
+              this.error = true;
+              this.messageError = err.response.data.message;
               console.log(err.response.data);
             });
           }
@@ -305,9 +321,13 @@ export default {
             let {nombre, empresa} = this.obraNueva;
             this.$axios.post("/obras",{nombre,empresa}).then(resp=>{
               this.modalObras = false;
+              this.success = true;
+                this.messageSuccess = "Obra Creada";
               this.$refs.obraform.reset();
               this.$refs.obraform.resetValidation();
             }).catch(err=>{
+              this.error = true;
+              this.messageError = err.response.data.message;
               console.log(err.response.data);
             });
           }
