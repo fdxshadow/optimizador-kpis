@@ -40,18 +40,25 @@
         </v-toolbar>
         <v-card outlined flat class="pa-3" v-for="s in semanasByTarea" :key=s.id>
                     <v-layout row wrap class="pa-4" style="border-left: 4px solid #3cd1c2;" >
-                        <v-flex xs12 sm4 md4>
+                        <v-flex xs12 sm3 md3>
                             <div class="caption grey--text">Semana</div>
                             <div>{{s.semana}}</div>
                         </v-flex>
-                         <v-flex xs12 sm4 md4>
+                         <v-flex xs12 sm3 md3>
+                            <div class="caption grey--text">Avance Esperado</div>
+                           <!-- <div>{{s.trabajo_efectivo}}</div>-->
+                            <div class="red--text">{{s.carga_trabajo}}</div>
+                        </v-flex>
+                         <v-flex xs12 sm3 md3>
                             <div class="caption grey--text">Porc Avance</div>
                            <!-- <div>{{s.trabajo_efectivo}}</div>-->
-                            <v-text-field
+                            <v-text-field v-if="s.trabajo_efectivo==0"
                               v-model="s.trabajo_efectivo"
                             ></v-text-field>
+
+                            <div v-if="s.trabajo_efectivo>0" class="blue--text">{{s.trabajo_efectivo}}</div>
                         </v-flex>
-                         <v-flex xs12 sm4 md4>
+                         <v-flex xs12 sm3 md3>
                             <div class="caption grey--text">Acciones</div>
                             <div> 
                                 <v-chip @click="guardarAvance(s)" class="ma-2" color="indigo" text-color="white">
@@ -80,8 +87,8 @@
 export default {
   data (){
     return {
-      headers:[{text:'Nombre', value:'nombre'},{text:'Area',value:'area_responsable'}],
-      headerSemana:[{text:'semana', value: 'semana'},{text:'Porc Avance', value:'trabajo_efectivo'}],
+      headers:[{text:'Nombre', value:'nombre'},{text:'Area',value:'area_responsable'},{text:'Fecha Inicio', value:'comienzo'},{text:'Fecha Fin',value:'fin'}],
+      headerSemana:[{text:'semana', value: 'semana'},{text:'Avance Esperado',value:'carga_trabajo'},{text:'Avance Real', value:'trabajo_efectivo'}],
       semanasDialog:false,
       lastRow:0,
       semanasByTarea:[],
