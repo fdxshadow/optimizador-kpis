@@ -23,13 +23,13 @@
                         <v-flex xs12 sm4 md3>
                             <div class="caption grey--text">Acciones</div>
                             <div> 
-                                <v-chip @click="editarUsuario(usuario.id)" class="ma-2" color="indigo" text-color="white">
+                                <v-chip @click="editarUsuario(usuario)" class="ma-2" color="indigo" text-color="white">
                                      <v-avatar left>
                                         <v-icon small>mdi-pencil</v-icon>
                                     </v-avatar>
                                     Editar
                                 </v-chip>
-                                <v-chip  @click="eliminarUsuario(usuario.id)" class="ma-2" color="red" text-color="white">
+                                <v-chip  @click="eliminarUsuario(usuario)" class="ma-2" color="red" text-color="white">
                                     <v-avatar left>
                                         <v-icon small>mdi-delete</v-icon>
                                     </v-avatar>
@@ -99,11 +99,35 @@
                   required
                 ></v-text-field>
                 <v-text-field
-                  label="Nombre empresa*"
+                  label="Email Usuario*"
                   v-model="usuarioUpdate.email"
                   :rules="rulesRequired"
                   required
                 ></v-text-field>
+
+                 <a v-if="usuarioUpdate.tipo=='gerente'" href="#" @click="cambiarObras = true">Cambiar o agregar obras asignadas</a>
+
+                 <v-text-field  v-if="usuarioUpdate.tipo=='gerente' && cambiarObras"
+                    label="Empresa"
+                    v-model="this.empresaNombreEditar"
+                    disabled>
+                 </v-text-field>
+
+                <v-autocomplete
+                  v-if="usuarioUpdate.tipo=='gerente' && cambiarObras"
+                  :items=obrasEditar
+                  v-model="usuarioUpdate.obras"
+                  item-text="nombre"
+                  item-value="id"
+                  label="Obra*"
+                  multiple
+                  :rules="rulesRequired"
+                ></v-autocomplete>
+              </v-col>
+              <v-col
+                cols="12"
+                sm="6"
+              >
               </v-col>
             </v-row>
             </v-form>
@@ -114,7 +138,7 @@
             <v-btn
                 color="error darken-1"
                 text
-                @click="editarUsuarioModal = false"
+                @click="cancelarUpdate"
             >
             Cancelar
           </v-btn>
@@ -149,6 +173,10 @@ export default {
             error:false,
             messageSuccess:'',
             messageError:'',
+            cambiarObras:false,
+            empresaNombreEditar:'',
+            obrasEditar:[],
+            usuarioUpdateIndex:-1, 
             rulesRequired:[
                 v => !!v  || 'Este campo es requerido'
             ],
@@ -167,12 +195,18 @@ export default {
                 this.usuarios=resp.data;
             }); 
         },
-        async eliminarUsuario(id){
-            this.userDelete = await this.usuarios.find(e=>e.id==id);
+        async eliminarUsuario(usuario){
+            this.userDelete = usuario;
             this.eliminarUsuarioConfirm = true;
         },
-        async editarUsuario(id){
-            this.usuarioUpdate = await this.usuarios.find(e=>e.id==id);
+        async editarUsuario(usuario){
+            this.usuarioUpdate = Object.assign({},usuario);
+            this.usuarioUpdateIndex = this.usuarios.indexOf(usuario);
+            if(this.usuarioUpdate.tipo=='gerente'){
+                this.empresaNombreEditar=this.usuarioUpdate.obras[0].empresa.nombre;
+                this.getObras(this.usuarioUpdate.obras[0].empresa.id);
+                 this.usuarioUpdate.obras = usuario.obras.map(e=>e.id);
+            }
             this.editarUsuarioModal = true;
 
         },
@@ -189,18 +223,37 @@ export default {
             })
         },
          confirmUpdate(){
-            this.$axios.put(`/usuarios/${this.usuarioUpdate.id}`,{nombre:this.usuarioUpdate.nombre,email:this.usuarioUpdate.email}).then(async resp=>{
-               this.usuarios=await this.usuarios.filter(e=> e.id!=this.usuarioUpdate.id);
-               this.usuarios.push(this.usuarioUpdate);
-               this.usuarios.sort((uA,uB)=> (uA.id > uB.index) ? 1 : -1);
-               this.editarUsuarioModal = true;
-               this.messageSuccess="Usuario actualizado correctamente";
-            this.success = true;
-            }).catch(e=>{
-                 this.messageError="Problemas al actualizar usuario";
-                this.error = true;
+            if((this.usuarioUpdate.length>0 && this.usuarioUpdate.tipo=="gerente") || (this.usuarioUpdate.tipo=='administrador')){
+                this.$axios.put(`/usuarios/${this.usuarioUpdate.id}`,{nombre:this.usuarioUpdate.nombre,email:this.usuarioUpdate.email,obras:this.usuarioUpdate.obras}).then(async resp=>{
+                    console.log(resp.data);
+                    this.usuarioUpdate.obras = resp.data;
+                    Object.assign(this.usuarios[this.usuarioUpdateIndex],this.usuarioUpdate);
+                    this.editarUsuarioModal=false;
+                    this.usuarioUpdateIndex = -1;
+                    this.cambiarObras = false;
+                    this.messageSuccess="Usuario actualizado correctamente";
+                    this.success = true;
+                }).catch(e=>{
+                    console.error(e);
+                    this.messageError="Problemas al actualizar usuario";
+                    this.error = true;
 
-            })
+                });
+             }else{
+                this.messageError="Problemas al actualizar usuario";
+                this.error = true;
+             }
+        },
+        cancelarUpdate(){
+            this.usuarioUpdateIndex = -1;
+            this.cambiarObras = false;
+            this.editarUsuarioModal=false;
+        },
+        getObras(id){
+           this.$axios.get(`/obras/byEmpresa/${id}`).then(resp=>{
+                this.obrasEditar=resp.data;
+            }); 
+
         }
     }
     

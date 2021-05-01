@@ -1,7 +1,7 @@
 <template>
   <v-app>
       <v-container>
-         <line-chart v-if="loaded" :data="barChartData" :options="barChartOptions" :height="100" />
+         <line-chart v-if="loaded" :data="barChartData" :options="barChartOptions" :height="200" />
     </v-container>
   </v-app>
 </template>
@@ -19,7 +19,7 @@ export default {
       barChartOptions: {
         responsive: true,
         legend: {
-          display: false
+          display: true
         },
         title: {
           display: true,
@@ -34,7 +34,14 @@ export default {
           xAxes: [
             {
               gridLines: {
-                display: false
+                display: true
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Semanas',
+                fontSize: 20,
+                fontColor:"black"
+
               }
             }
           ],
@@ -44,7 +51,14 @@ export default {
                 beginAtZero: true
               },
               gridLines: {
-                display: false
+                display: true
+              },
+              scaleLabel: {
+                display: true,
+                labelString: 'Porcentaje',
+                fontSize: 20,
+                fontColor:"black"
+
               }
             }
           ]

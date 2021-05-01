@@ -189,7 +189,7 @@
               <v-select
                 v-if="usuario.tipo=='supervisor'"
                 :items=obras
-                v-model="usuario.obras"
+                v-model="userObrasSelect"
                 item-text="nombre"
                 item-value="id"
                 label="Obra*"
@@ -206,6 +206,20 @@
                   :rules="rulesRequired"
                 ></v-autocomplete>
               </v-col>
+              <v-col
+                cols="12"
+                sm="6"
+              >
+                <v-select
+                  v-if="usuario.tipo=='supervisor'"
+                  :items=areas
+                  v-model="area_responsable"
+                  item-text="nombreArea"
+                  item-value="nombreArea"
+                  label="Area responsable*"
+                  :rules="rulesRequired">
+                </v-select>
+            </v-col>
             </v-row>
             </v-form>
 
@@ -255,6 +269,9 @@ export default {
         modalObras : false,
         empresas:[],
         obras:[],
+        userObrasSelect:null,
+        areas:[],
+        area_responsable:null,
         usuario:{},
         obraNueva:{},
         userValid:false,
@@ -275,8 +292,15 @@ export default {
     },
     watch:{
       empresaForObra: function (empresa){
-        console.log("Obteniendo obras por empresa",empresa);
-        this.getObras(empresa);
+        if(empresa!=null){            
+          this.getObras(empresa);
+        }
+      },
+      userObrasSelect: function (obra){
+        if(obra!=null){
+          this.usuario['obras']=obra;
+          this.getAreasByObra(obra);
+        }
       }
     },
     created() {
@@ -302,7 +326,7 @@ export default {
         crearUsuario(){
           if(this.$refs.userform.validate()){
             let {nombre,email,password,tipo,obras} = this.usuario;
-            this.$axios.post("usuarios/registro",{nombre,email,password,tipo,obras}).then(resp=>{
+          this.$axios.post("usuarios/registro",{nombre,email,password,tipo,obras,area_responsable:this.area_responsable}).then(resp=>{
                 this.modalUsuario = false;
                 this.success = true;
                 this.messageSuccess = "Usuario Creado";
@@ -335,6 +359,17 @@ export default {
         showModalObras(){
           this.modalObras = true;
           this.getEmpresas();
+        },
+        getAreasByObra(obra_id){
+          this.$axios.get(`/obras/areas/${obra_id}`).then(resp=>{
+            this.areas = resp.data;
+            console.log(resp);
+         }).catch(err=>{
+              this.error = true;
+              this.messageError = err.response.data.message;
+              this.areas = [];
+              console.log(err.response.data);
+            });
         }
     }
     

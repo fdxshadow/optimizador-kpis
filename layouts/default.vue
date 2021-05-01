@@ -178,8 +178,8 @@ methods:{
         },
         {
           icon: 'mdi-account',
-          title: 'Avance por Tipo',
-          to: '/gerente/avance_tipo',
+          title: 'Eficiencia',
+          to: '/gerente/eficiencia',
         },
          {
           icon: 'mdi-account',
@@ -194,7 +194,7 @@ methods:{
          {
           icon: 'mdi-account',
           title: 'Variacion %',
-          to: '/gerente/avance_tipo',
+          to: '/gerente/variacion',
         },
          {
           icon: 'mdi-truck',
@@ -205,8 +205,13 @@ methods:{
       case 'supervisor':
          return [{
           icon: 'mdi-home',
-          title: 'Mis Tareas',
-          to: '/serie',
+          title: 'Tareas Asignadas',
+          to: '/supervisor',
+        },
+        {
+          icon: 'mdi-home',
+          title: 'Tareas Obra',
+          to: '/supervisor/tareas',
         }]
         break;  
       default:
