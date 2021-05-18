@@ -92,6 +92,18 @@
                 ></v-select>
               </v-col>
             </v-row>
+            <v-row>
+              <v-col
+                cols="12"
+                sm="12"
+              >
+              <div class="subheading">
+                Fecha inicio obra
+              </div>
+             
+                <v-date-picker locale="es" v-model="obraNueva.fecha_inicio" :rules="rulesRequired"></v-date-picker>
+              </v-col>
+            </v-row>
             </v-form>
           </v-container>
           <small>* indica los campos requeridos</small>
@@ -342,8 +354,8 @@ export default {
         },
         crearObra(){
           if(this.$refs.obraform.validate()){
-            let {nombre, empresa} = this.obraNueva;
-            this.$axios.post("/obras",{nombre,empresa}).then(resp=>{
+            let {nombre, empresa,fecha_inicio} = this.obraNueva;
+            this.$axios.post("/obras",{nombre,empresa,fecha_inicio}).then(resp=>{
               this.modalObras = false;
               this.success = true;
                 this.messageSuccess = "Obra Creada";

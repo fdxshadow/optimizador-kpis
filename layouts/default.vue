@@ -174,7 +174,7 @@ methods:{
         return [{
           icon: 'mdi-home',
           title: 'Home',
-          to: `/gerente/empresa/${this.$store.state.obraSelect}`,
+          to: `/gerente/`,
         },
         {
           icon: 'mdi-account',

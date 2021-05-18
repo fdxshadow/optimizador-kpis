@@ -1,7 +1,9 @@
 <template>
   <v-app>
+     <semana-act-porcent />
       <v-container>
      <v-data-table
+     mt-2
     :headers="headers"
     :items="tareas"
     :items-per-page="itemsPerPage"
@@ -84,10 +86,12 @@
 </template>
 
 <script>
+import SemanaActPorcent from '../../components/SemanaActPorcent.vue';
 export default {
+  components: { SemanaActPorcent },
   data (){
     return {
-      headers:[{text:'Nombre', value:'nombre'},{text:'Area',value:'area_responsable'},{text:'Fecha Inicio', value:'comienzo'},{text:'Fecha Fin',value:'fin'}],
+      headers:[{text:'Nombre', value:'nombre'},{text:'Area',value:'area_responsable'},{text:'Fecha Inicio', value:'comienzo'},{text:'Fecha Fin',value:'fin'},{text:'% Esperado', value:'porc_esperado'},{text:'% Real', value:'porc_real'}],
       headerSemana:[{text:'semana', value: 'semana'},{text:'Avance Esperado',value:'carga_trabajo'},{text:'Avance Real', value:'trabajo_efectivo'}],
       semanasDialog:false,
       lastRow:0,

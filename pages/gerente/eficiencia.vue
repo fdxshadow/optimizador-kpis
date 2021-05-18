@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  middleware: ['authenticated','gerente'],
+  middleware: ['authenticated'],
   data() {
     return {
       loaded:false,
@@ -73,7 +73,7 @@ export default {
   methods:{
     getDataCurvaS(){
       console.log("se ejecuta");
-      this.$axios.get(`http://localhost:4000/planificacion/eficiencia/${this.$store.state.obraSelect}`).then(resp=>{
+      this.$axios.get(`http://localhost:4000/planificacion/eficiencia/14`).then(resp=>{
         let data = resp.data;
         this.barChartData = {
           labels: data.labels,

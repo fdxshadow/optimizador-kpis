@@ -1,7 +1,7 @@
 
 //Mi store o almacenamiento
 export const state = () => {
-    obraSelect: null
+    obrasGerente: null
 }
 //Acceso a los datos
 /*export const getters = {
@@ -13,7 +13,7 @@ export const state = () => {
 
 //Acciones, metodos publicos para llamar el mutations
 export const actions = {
-    selectObra({ commit },payload) {
+    loadObras({ commit },payload) {
         commit('setObra',payload.obra);
     },
     deleteObra({commit}) {
@@ -25,6 +25,6 @@ export const actions = {
 //modificar el almacenamiento
 export const mutations = {
     setObra(state,obra) {
-        state.obraSelect = obra;
+        state.obrasGerente = obra;
     },
 }

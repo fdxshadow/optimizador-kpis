@@ -1,5 +1,6 @@
 <template>
   <v-app>
+      <semana-act-porcent />
       <v-container>
       <v-data-table
     :headers="headers"

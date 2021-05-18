@@ -2,9 +2,17 @@
   <v-app>
       <v-container>
           <div>
+            <v-select
+                :items = this.$store.state.obrasGerente
+                 item-text="nombre"
+                 item-value="id"
+                 label="Seleccione una Obra"
+                 v-model="obraSeleccionada"
+                >  
+                </v-select>
              <v-select
                   :items= semanas
-                  label="Semanas"
+                  label="Semana"
                   v-model="semanaSeleccionada"
                 ></v-select>
           </div>
@@ -17,12 +25,13 @@
 
 <script>
 export default {
-    middleware: ['authenticated','gerente'],
+    middleware: ['authenticated'],
     data() {
         return {
         loaded:true,
         semanas:this.getSemanas(),
         semanaSeleccionada:1,
+        obraSeleccionada:1,
         ChartData: {
                     labels: ["test","test1","test2"],
                     datasets: [{
@@ -34,7 +43,7 @@ export default {
                             'rgb(255, 205, 86)'
                         ],
                         hoverOffset: 3
-                    }]
+                    }],
                 },
         ChartOptions: {
         responsive: true,
@@ -49,7 +58,7 @@ export default {
         },
         tooltips: {
           backgroundColor: '#17BF62'
-        }
+        },
       }
     }
     },
@@ -58,13 +67,20 @@ export default {
             console.log(semana);
             this.getVariacion(semana);
         },
+        obraSeleccionada: function(obra){
+          let objetoObra=this.$store.state.obrasGerente.filter(ob=> ob.id==obra)[0];
+          this.semanaSeleccionada = objetoObra.semana_actual;
+        }
     },
     mounted(){
-        this.getVariacion(1);
+        if (this.$store.state.obrasGerente == null) {
+          this.$router.push('/gerente');
+          
+        }
     },
     methods:{
         getVariacion(sem){
-            this.$axios.get(`http://localhost:4000/planificacion/variacion/${this.$store.state.obraSelect}/${sem}`).then(async resp=>{
+            this.$axios.get(`http://localhost:4000/planificacion/variacion/${this.obraSeleccionada}/${sem}`).then(async resp=>{
               console.log(resp.data);
                 this.ChartData =  {
                     labels: await resp.data.map(r=>r.area_responsable),
