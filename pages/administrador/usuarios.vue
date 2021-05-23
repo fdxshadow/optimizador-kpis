@@ -1,10 +1,5 @@
 <template>
-<!--<v-container>
-    <v-data-table :headers="columnas" :items="usuarios" class="elevation-19">
-        
-    </v-data-table>
-</v-container>-->
- <div>
+ <v-app>
         <v-container class="my-5">
                 <v-card outlined flat class="pa-3 my-2" v-for="usuario in usuarios" :key=usuario.id>
                     <v-layout row wrap class="pa-4" style="border-left: 4px solid #3cd1c2;" >
@@ -153,7 +148,7 @@
         </v-card-actions>
         </v-card>
         </v-dialog>
-    </div>
+ </v-app>
 </template>
 <script>
 export default {

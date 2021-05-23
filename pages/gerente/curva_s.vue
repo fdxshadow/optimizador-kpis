@@ -1,7 +1,22 @@
 <template>
   <v-app>
       <v-container>
-         <line-chart v-if="loaded" :data="barChartData" :options="barChartOptions" :height="200" />
+        <div>
+            <v-select
+                :items = this.$store.state.obrasGerente
+                 item-text="nombre"
+                 item-value="id"
+                 label="Seleccione una Obra"
+                 v-model="obraSeleccionada"
+                >  
+                </v-select>
+             <v-select
+                  :items= semanas
+                  label="Semana"
+                  v-model="semanaSeleccionada"
+                ></v-select>
+          </div>
+         <line-chart v-if="loaded" :chart-data="barChartData" :options="barChartOptions" :height="200" />
     </v-container>
   </v-app>
 </template>
@@ -15,6 +30,9 @@ export default {
       labels:null,
       datareal:null,
       dataprogramada:null,
+      semanaSeleccionada:null,
+      obraSeleccionada:null,
+      semanas:Array.from({length: 60}, (_, i) => i + 1),
       barChartData: null,
       barChartOptions: {
         responsive: true,
@@ -66,21 +84,39 @@ export default {
       }
     }
   },
+   watch:{
+        semanaSeleccionada: function(semana){
+            console.log(semana);
+            this.getDataCurvaS();
+        },
+        obraSeleccionada: function(obra){
+          console.log(obra);
+          let objetoObra=this.$store.state.obrasGerente.filter(ob=> ob.id==obra)[0];
+          console.log(objetoObra);
+          this.semanaSeleccionada = objetoObra.semana_actual;
+        }
+    },
+    mounted(){
+        if (this.$store.state.obrasGerente == null) {
+          this.$router.push('/gerente');
+          
+        }
+    },
   
   created(){
-    this.getDataCurvaS();
+    //this.getDataCurvaS();
   },
   methods:{
     getDataCurvaS(){
       console.log("se ejecuta");
-      this.$axios.get(`http://localhost:4000/planificacion/curva_s/14`).then(resp=>{
+      this.$axios.get(`http://localhost:4000/planificacion/curva_s/${this.obraSeleccionada}`).then(resp=>{
         let data = resp.data;
         this.barChartData = {
           labels: data.labels,
           datasets: [
             {
               label: 'Avance Real',
-              data: data.dataReal,
+              data: data.dataReal.slice(0,this.semanaSeleccionada),
               lineTension: 0,
               fill: false,
               borderColor: 'red'

@@ -49,7 +49,7 @@
     </v-app-bar>
     <v-main>
       <v-container>
-        <nuxt />
+        <nuxt/>
       </v-container>
     </v-main>
     <v-footer
@@ -183,11 +183,6 @@ methods:{
         },
          {
           icon: 'mdi-account',
-          title: 'Ruta Critica',
-          to: '/gerente/ruta_critica',
-        },
-         {
-          icon: 'mdi-account',
           title: 'Curva S',
           to: '/gerente/curva_s',
         },
@@ -212,7 +207,21 @@ methods:{
           icon: 'mdi-home',
           title: 'Tareas Obra',
           to: '/supervisor/tareas',
-        }]
+        },{
+          icon: 'mdi-account',
+          title: 'Eficiencia',
+          to: '/supervisor/eficiencia',
+        },
+         {
+          icon: 'mdi-account',
+          title: 'Curva S',
+          to: '/supervisor/curva_s',
+        },
+         {
+          icon: 'mdi-account',
+          title: 'Variacion %',
+          to: '/supervisor/variacion',
+        },]
         break;  
       default:
         break;

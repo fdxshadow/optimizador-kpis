@@ -16,15 +16,15 @@
 export default {
      data (){
     return {
-        headers:[{text:'Nombre', value:'nombre'},{text:'Area',value:'area_responsable'}],
+      headers:[{text:'Nombre', value:'nombre'},{text:'Area',value:'area_responsable'}],
       tareas:[],
-      itemsPerPage:5
+      itemsPerPage:5,
     }
   },
   watch: {
 
   },
-  created(){
+  fetch(){
     this.getTareas();
   },
   methods:{

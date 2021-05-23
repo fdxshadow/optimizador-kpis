@@ -13,15 +13,22 @@ export default {
             avance_proyecto:null,
     }
   },
-  created(){
-    this.getEstadoActual();
+  fetch(){
+      if(!this.$store.state.semanaActual){
+           this.getEstadoActual();
+      }else{
+          this.semanaActual = this.$store.state.semanaActual;
+          this.avance_proyecto = this.$store.state.avance_proyecto;
+      }
   },
   methods:{
       getEstadoActual(){
-          //console.log(this.$auth.user.tipo);
           this.$axios.get(`obras/estado/${this.$auth.user.id}`).then(resp=>{
               this.semanaActual = resp.data.semanaActual;
               this.avance_proyecto = resp.data.porc_avance;
+              this.$store.state.semanaActual = resp.data.semanaActual;
+              this.$store.state.avance_proyecto=resp.data.porc_avance
+
           }).catch(e=>{
               console.log(e.getMessage());
           });

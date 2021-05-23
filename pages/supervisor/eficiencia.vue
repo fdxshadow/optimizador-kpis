@@ -1,16 +1,9 @@
 <template>
   <v-app>
+     <semana-act-porcent />
       <v-container>
 
          <div>
-            <v-select
-                :items = this.$store.state.obrasGerente
-                 item-text="nombre"
-                 item-value="id"
-                 label="Seleccione una Obra"
-                 v-model="obraSeleccionada"
-                >  
-                </v-select>
              <v-select
                   :items= semanas
                   label="Semana"
@@ -31,8 +24,8 @@ export default {
       labels:null,
       datareal:null,
       dataprogramada:null,
-      obraSeleccionada:null,
-      semanaSeleccionada:null,
+      obraSeleccionada:this.$auth.user.obra.id,
+      semanaSeleccionada:this.$store.state.semanaActual,
       semanas: Array.from({length: 60}, (_, i) => i + 1),
       barChartData: {
           labels: ['A','B','C'],
@@ -107,23 +100,11 @@ export default {
   },
    watch:{
         semanaSeleccionada: function(semana){
-            console.log(semana);
             this.getEficiencia();
-        },
-        obraSeleccionada: function(obra){
-          let objetoObra=this.$store.state.obrasGerente.filter(ob=> ob.id==obra)[0];
-          this.semanaSeleccionada = objetoObra.semana_actual;
         }
     },
-    mounted(){
-        if (this.$store.state.obrasGerente == null) {
-          this.$router.push('/gerente');
-          
-        }
-    },
-  
   created(){
-    //this.getDataCurvaS();
+    this.getEficiencia();
   },
   methods:{
     getEficiencia(){

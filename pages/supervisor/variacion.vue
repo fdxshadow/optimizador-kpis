@@ -1,15 +1,8 @@
 <template>
   <v-app>
+       <semana-act-porcent />
       <v-container>
           <div>
-            <v-select
-                :items = this.$store.state.obrasGerente
-                 item-text="nombre"
-                 item-value="id"
-                 label="Seleccione una Obra"
-                 v-model="obraSeleccionada"
-                >  
-                </v-select>
              <v-select
                   :items= semanas
                   label="Semana"
@@ -30,8 +23,8 @@ export default {
         return {
         loaded:true,
         semanas:Array.from({length: 60}, (_, i) => i + 1),
-        semanaSeleccionada:1,
-        obraSeleccionada:1,
+        semanaSeleccionada:this.$store.state.semanaActual,
+        obraSeleccionada:this.$auth.user.obra.id,
         ChartData: {
                     labels: ["test","test1","test2"],
                     datasets: [{
@@ -64,19 +57,11 @@ export default {
     },
     watch:{
         semanaSeleccionada: function(semana){
-            console.log(semana);
             this.getVariacion(semana);
         },
-        obraSeleccionada: function(obra){
-          let objetoObra=this.$store.state.obrasGerente.filter(ob=> ob.id==obra)[0];
-          this.semanaSeleccionada = objetoObra.semana_actual;
-        }
     },
-    mounted(){
-        if (this.$store.state.obrasGerente == null) {
-          this.$router.push('/gerente');
-          
-        }
+    created(){
+        this.getVariacion(1);
     },
     methods:{
         getVariacion(sem){

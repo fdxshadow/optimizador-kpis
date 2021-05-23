@@ -1,16 +1,8 @@
 <template>
   <v-app>
+     <semana-act-porcent />
       <v-container>
-
-         <div>
-            <v-select
-                :items = this.$store.state.obrasGerente
-                 item-text="nombre"
-                 item-value="id"
-                 label="Seleccione una Obra"
-                 v-model="obraSeleccionada"
-                >  
-                </v-select>
+        <div>
              <v-select
                   :items= semanas
                   label="Semana"
@@ -31,30 +23,10 @@ export default {
       labels:null,
       datareal:null,
       dataprogramada:null,
-      obraSeleccionada:null,
-      semanaSeleccionada:null,
-      semanas: Array.from({length: 60}, (_, i) => i + 1),
-      barChartData: {
-          labels: ['A','B','C'],
-          datasets: [
-            {
-              label: 'Optimo',
-              data: [1,2,3],
-              lineTension: 0,
-              fill: false,
-              borderColor: 'green'
-              //backgroundColor: 'green'
-            },
-            {
-              label: 'Eficiencia',
-              data: [1,2,3],
-              lineTension: 0,
-              fill: false,
-              borderColor: 'blue'
-              //backgroundColor: 'blue'
-            },
-          ]
-        },
+      semanaSeleccionada:this.$store.state.semanaActual,
+      obraSeleccionada:this.$auth.user.obra.id,
+      semanas:Array.from({length: 60}, (_, i) => i + 1),
+      barChartData: null,
       barChartOptions: {
         responsive: true,
         legend: {
@@ -62,7 +34,7 @@ export default {
         },
         title: {
           display: true,
-          text: '% EFICIENCIA',
+          text: 'Curva S',
           fontSize: 24,
           fontColor: '#6b7280'
         },
@@ -71,10 +43,7 @@ export default {
         },
         scales: {
           xAxes: [
-            { 
-              ticks: {
-                beginAtZero: true
-              },
+            {
               gridLines: {
                 display: true
               },
@@ -82,6 +51,7 @@ export default {
                 display: true,
                 labelString: 'Semanas',
                 fontSize: 20,
+                fontColor:"black"
 
               }
             }
@@ -97,7 +67,9 @@ export default {
               scaleLabel: {
                 display: true,
                 labelString: 'Porcentaje',
-                fontSize: 18
+                fontSize: 20,
+                fontColor:"black"
+
               }
             }
           ]
@@ -108,46 +80,35 @@ export default {
    watch:{
         semanaSeleccionada: function(semana){
             console.log(semana);
-            this.getEficiencia();
-        },
-        obraSeleccionada: function(obra){
-          let objetoObra=this.$store.state.obrasGerente.filter(ob=> ob.id==obra)[0];
-          this.semanaSeleccionada = objetoObra.semana_actual;
+            this.getDataCurvaS();
         }
     },
-    mounted(){
-        if (this.$store.state.obrasGerente == null) {
-          this.$router.push('/gerente');
-          
-        }
-    },
-  
   created(){
-    //this.getDataCurvaS();
+    this.getDataCurvaS();
   },
   methods:{
-    getEficiencia(){
+    getDataCurvaS(){
       console.log("se ejecuta");
-      this.$axios.get(`http://localhost:4000/planificacion/eficiencia/${this.obraSeleccionada}`).then(resp=>{
+      this.$axios.get(`http://localhost:4000/planificacion/curva_s/${this.obraSeleccionada}`).then(resp=>{
         let data = resp.data;
         this.barChartData = {
           labels: data.labels,
           datasets: [
             {
-              label: 'Optimo',
-              data: data.arregloBase,
+              label: 'Avance Real',
+              data: data.dataReal.slice(0,this.semanaSeleccionada),
               lineTension: 0,
               fill: false,
-              borderColor: 'green'
-              //backgroundColor: 'green'
+              borderColor: 'red'
+              //backgroundColor: '#003f5c'
             },
             {
-              label: 'Eficiencia',
-              data: data.eficiencia.slice(0,this.semanaSeleccionada),
+              label: 'Avance Esperado)',
+              data: data.dataProgramado,
               lineTension: 0,
               fill: false,
               borderColor: 'blue'
-              //backgroundColor: 'blue'
+              //backgroundColor: '#2f4b7c'
             },
           ]
         };
