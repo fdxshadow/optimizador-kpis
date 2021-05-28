@@ -89,7 +89,7 @@ export default {
   methods:{
     getDataCurvaS(){
       console.log("se ejecuta");
-      this.$axios.get(`http://localhost:4000/planificacion/curva_s/${this.obraSeleccionada}`).then(resp=>{
+      this.$axios.get(`/planificacion/curva_s/${this.obraSeleccionada}`).then(resp=>{
         let data = resp.data;
         this.barChartData = {
           labels: data.labels,

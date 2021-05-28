@@ -65,7 +65,7 @@ export default {
     },
     methods:{
         getVariacion(sem){
-            this.$axios.get(`http://localhost:4000/planificacion/variacion/${this.obraSeleccionada}/${sem}`).then(async resp=>{
+            this.$axios.get(`/planificacion/variacion/${this.obraSeleccionada}/${sem}`).then(async resp=>{
               console.log(resp.data);
                 this.ChartData =  {
                     labels: await resp.data.map(r=>r.area_responsable),

@@ -109,7 +109,7 @@ export default {
   methods:{
     getEficiencia(){
       console.log("se ejecuta");
-      this.$axios.get(`http://localhost:4000/planificacion/eficiencia/${this.obraSeleccionada}`).then(resp=>{
+      this.$axios.get(`/planificacion/eficiencia/${this.obraSeleccionada}`).then(resp=>{
         let data = resp.data;
         this.barChartData = {
           labels: data.labels,
