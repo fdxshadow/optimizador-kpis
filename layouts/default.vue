@@ -177,22 +177,22 @@ methods:{
           to: `/gerente/`,
         },
         {
-          icon: 'mdi-account',
+          icon: 'mdi-chart-sankey',
           title: 'Eficiencia',
           to: '/gerente/eficiencia',
         },
          {
-          icon: 'mdi-account',
+          icon: 'mdi-chart-line-variant',
           title: 'Curva S',
           to: '/gerente/curva_s',
         },
          {
-          icon: 'mdi-account',
+          icon: 'mdi-chart-pie',
           title: 'Variacion %',
           to: '/gerente/variacion',
         },
          {
-          icon: 'mdi-truck',
+          icon: 'mdi-text-box-outline',
           title: 'Tareas',
           to: '/gerente/tareas',
         }]
@@ -204,21 +204,21 @@ methods:{
           to: '/supervisor',
         },
         {
-          icon: 'mdi-home',
+          icon: 'mdi-text-box-outline',
           title: 'Tareas Obra',
           to: '/supervisor/tareas',
         },{
-          icon: 'mdi-account',
+          icon: 'mdi-chart-sankey',
           title: 'Eficiencia',
           to: '/supervisor/eficiencia',
         },
          {
-          icon: 'mdi-account',
+          icon: 'mdi-chart-line-variant',
           title: 'Curva S',
           to: '/supervisor/curva_s',
         },
          {
-          icon: 'mdi-account',
+          icon: 'mdi-chart-pie',
           title: 'Variacion %',
           to: '/supervisor/variacion',
         },]

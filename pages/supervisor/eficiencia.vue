@@ -112,7 +112,7 @@ export default {
       this.$axios.get(`/planificacion/eficiencia/${this.obraSeleccionada}`).then(resp=>{
         let data = resp.data;
         this.barChartData = {
-          labels: data.labels,
+          labels: data.labels.map(sem=> new Date(sem).toLocaleDateString()),
           datasets: [
             {
               label: 'Optimo',
