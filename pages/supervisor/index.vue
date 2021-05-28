@@ -49,16 +49,20 @@
                          <v-flex xs12 sm3 md3>
                             <div class="caption grey--text">Avance Esperado</div>
                            <!-- <div>{{s.trabajo_efectivo}}</div>-->
-                            <div class="red--text">{{s.carga_trabajo}}</div>
+                            <div class="red--text">{{Number(s.carga_trabajo).toFixed(2)}}</div>
                         </v-flex>
                          <v-flex xs12 sm3 md3>
-                            <div class="caption grey--text">Porc Avance</div>
+                            <div class="caption grey--text">Porc Avance </div>
                            <!-- <div>{{s.trabajo_efectivo}}</div>-->
-                            <v-text-field v-if="s.trabajo_efectivo==0"
+
+                            <!--<v-text-field v-if="s.trabajo_efectivo==0"
+                              v-model="trabajoEfecMom"
+                            ></v-text-field>-->
+                            <v-text-field
                               v-model="s.trabajo_efectivo"
                             ></v-text-field>
 
-                            <div v-if="s.trabajo_efectivo>0" class="blue--text">{{s.trabajo_efectivo}}</div>
+                             <!--<div v-if="s.trabajo_efectivo>=0" class="blue--text">{{s.trabajo_efectivo}}</div>-->
                         </v-flex>
                          <v-flex xs12 sm3 md3>
                             <div class="caption grey--text">Acciones</div>
@@ -94,6 +98,7 @@ export default {
       headers:[{text:'Nombre', value:'nombre'},{text:'Area',value:'area_responsable'},{text:'Fecha Inicio', value:'comienzo'},{text:'Fecha Fin',value:'fin'},{text:'% Esperado', value:'porc_esperado'},{text:'% Real', value:'porc_real'}],
       headerSemana:[{text:'semana', value: 'semana'},{text:'Avance Esperado',value:'carga_trabajo'},{text:'Avance Real', value:'trabajo_efectivo'}],
       semanasDialog:false,
+      //trabajoEfecMom
       lastRow:0,
       semanasByTarea:[],
       tareas:[],
