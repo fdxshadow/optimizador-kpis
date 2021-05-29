@@ -120,8 +120,7 @@ export default {
   },
   methods:{
     getTareasByArea(){
-      this.$axios.get(`/tareas/area/${this.$store.state.auth.user.area_responsable}`).then(resp=>{
-        console.log(resp.data);
+      this.$axios.get(`/tareas/area/${this.$store.state.auth.user.area_responsable}/${this.$store.state.semanaActual}`).then(resp=>{
         this.tareas = resp.data;
       }).catch(err=>{
         console.log(err.response.data.message);
@@ -145,11 +144,13 @@ export default {
     },
     guardarAvance(semana){
       this.$axios.post('tareas/semanas',semana).then(resp=>{
+        if(semana.semana==this.$store.state.semanaActual){
+        this.tareas.find(t=> t.id==this.lastRow.id)[0].porc_real =  this.tareas.find(t=> t.id==this.lastRow.id)[0].porc_real + semana.trabajo_efectivo
+        }
         this.semanasDialog = false;
         this.success = true;
         this.messageSuccess = "Porcentaje de avance actualizado correctamente";
        }).catch(err=>{
-       
           this.error = true;
           this.messageError = "Porcentaje de avance no pudo actualizarse, intentelo nuevamente";
       });

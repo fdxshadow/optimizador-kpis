@@ -29,7 +29,7 @@ export default {
   },
   methods:{
     getTareas(){
-      this.$axios.get(`/tareas/obra_usuario/${this.$store.state.semanaActual}`).then(resp=>{
+      this.$axios.get(`/tareas/obra_usuario/`).then(resp=>{
         this.tareas = resp.data;
       }).catch(err=>{
         console.log(err.response.data.message);
