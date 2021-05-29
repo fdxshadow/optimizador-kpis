@@ -237,7 +237,7 @@
 
             
           </v-container>
-          <small>*indicates required field</small>
+           <small>* indica los campos requeridos</small>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

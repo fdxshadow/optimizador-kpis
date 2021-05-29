@@ -30,8 +30,8 @@ export default {
         return {
         loaded:true,
         semanas:Array.from({length: 60}, (_, i) => i + 1),
-        semanaSeleccionada:1,
-        obraSeleccionada:1,
+        semanaSeleccionada:null,
+        obraSeleccionada:null,
         ChartData: {
                     labels: ["test","test1","test2"],
                     datasets: [{
