@@ -116,11 +116,11 @@ export default {
   },
   created(){
     this.getTareasByArea();
-
   },
   methods:{
     getTareasByArea(){
       this.$axios.get(`/tareas/area/${this.$store.state.auth.user.area_responsable}/${this.$store.state.semanaActual}`).then(resp=>{
+        console.log(resp.data);
         this.tareas = resp.data;
       }).catch(err=>{
         console.log(err.response.data.message);

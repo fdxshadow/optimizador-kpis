@@ -13,7 +13,7 @@ export default {
             avance_proyecto:null,
     }
   },
-  fetch(){
+  created(){
       if(!this.$store.state.semanaActual){
            this.getEstadoActual();
       }else{
