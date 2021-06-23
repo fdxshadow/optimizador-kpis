@@ -2,6 +2,7 @@
 <div >
      <v-chip text-color="white" class="text-md-body-1" color="orange">Semana Actual: {{semanaActual}}</v-chip>
      <v-chip text-color="white" class="text-md-body-1" color="blue">Avance Real: {{avance_proyecto}}%</v-chip>
+     <v-chip text-color="white" class="text-md-body-1" color="primary">Avance Esperado: {{avance_esperado}}%</v-chip>
 </div>
 </template>
 
@@ -11,6 +12,7 @@ export default {
         return {
             semanaActual:null,
             avance_proyecto:null,
+            avance_esperado:null
     }
   },
   created(){
@@ -26,8 +28,10 @@ export default {
           this.$axios.get(`obras/estado/${this.$auth.user.id}`).then(resp=>{
               this.semanaActual = resp.data.semanaActual;
               this.avance_proyecto = resp.data.porc_avance;
+              this.avance_esperado = resp.data.porc_prog
               this.$store.state.semanaActual = resp.data.semanaActual;
-              this.$store.state.avance_proyecto=resp.data.porc_avance
+              this.$store.state.avance_proyecto=resp.data.porc_avance;
+              this.$store.state.avance_esperado=resp.data.porc_prog
 
           }).catch(e=>{
               console.log(e.getMessage());
