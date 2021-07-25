@@ -10,11 +10,34 @@
     @click:row="listarSemanasByTarea"
     class="elevation-1"
   >
+
+  <template v-slot:item.avance_semana="props">
+        <v-edit-dialog
+          :return-value.sync="props.item.avance_semana"
+          @save="guardarAvance(props)"
+        >
+          {{ props.item.avance_semana }}
+          <template v-slot:input>
+            <v-text-field
+              v-model="props.item.avance_semana"
+              label="Actualizar"
+              single-line
+              counter
+            ></v-text-field>
+          </template>
+        </v-edit-dialog>
+      </template>
+
+
+
+
+
+
   </v-data-table>
     </v-container>
 
 
-   <v-dialog
+   <!--<v-dialog
       v-model="semanasDialog"
       persistent
       max-width="80%"
@@ -48,22 +71,22 @@
                         </v-flex>
                          <v-flex xs12 sm3 md3>
                             <div class="caption grey--text">Avance Esperado</div>
-                           <!-- <div>{{s.trabajo_efectivo}}</div>-->
-                            <div class="red--text">{{Number(s.carga_trabajo).toFixed(2)}}</div>
+                            <div>{{s.trabajo_efectivo}}</div>
+            <div class="red--text">{{Number(s.carga_trabajo).toFixed(2)}}</div>
                         </v-flex>
                          <v-flex xs12 sm3 md3>
                             <div class="caption grey--text">Porc Avance </div>
-                           <!-- <div>{{s.trabajo_efectivo}}</div>-->
+                            <div>{{s.trabajo_efectivo}}</div>
 
-                            <!--<v-text-field v-if="s.trabajo_efectivo==0"
+                            <v-text-field v-if="s.trabajo_efectivo==0"
                               v-model="trabajoEfecMom"
                             ></v-text-field>-->
-                            <v-text-field
+                            <!--<v-text-field
                               v-model="s.trabajo_efectivo"
                             ></v-text-field>
 
-                             <!--<div v-if="s.trabajo_efectivo>=0" class="blue--text">{{s.trabajo_efectivo}}</div>-->
-                        </v-flex>
+                             <div v-if="s.trabajo_efectivo>=0" class="blue--text">{{s.trabajo_efectivo}}</div>-->
+                        <!--</v-flex>
                          <v-flex xs12 sm3 md3>
                             <div class="caption grey--text">Acciones</div>
                             <div> 
@@ -77,7 +100,7 @@
                         </v-flex>
                     </v-layout>
                 </v-card>
-    </v-dialog>
+    </v-dialog>-->
 
     <v-snackbar v-model="success" :timeout="2000" color="primary" top> 
         {{this.messageSuccess}}
@@ -95,7 +118,7 @@ export default {
   components: { SemanaActPorcent },
   data (){
     return {
-      headers:[{text:'Nombre', value:'nombre'},{text:'Area',value:'area_responsable'},{text:'Fecha Inicio', value:'comienzo'},{text:'Fecha Fin',value:'fin'},{text:'% Esperado', value:'porc_esperado'},{text:'% Real', value:'porc_real'}],
+      headers:[{text:'Nombre', value:'nombre'},{text:'Fecha Inicio', value:'comienzo'},{text:'Fecha Fin',value:'fin'},{text:'% Esperado', value:'porc_esperado'},{text:'% Real', value:'porc_real'},{text:'Avance Semana Actual', value:'avance_semana'}],
       headerSemana:[{text:'semana', value: 'semana'},{text:'Avance Esperado',value:'carga_trabajo'},{text:'Avance Real', value:'trabajo_efectivo'}],
       semanasDialog:false,
       //trabajoEfecMom
@@ -143,14 +166,15 @@ export default {
       
     },
     guardarAvance(semana){
-      this.$axios.post('tareas/semanas',semana).then(resp=>{
-        if(semana.semana==this.$store.state.semanaActual){
-        this.tareas.find(t=> t.id==this.lastRow.id)[0].porc_real =  this.tareas.find(t=> t.id==this.lastRow.id)[0].porc_real + semana.trabajo_efectivo
-        }
+      const {id,avance_semana} = semana.item;
+      console.log(id,avance_semana);
+      this.$axios.post('tareas/semanas',{id,avance_semana,semana_actual:this.$store.state.semanaActual}).then(({data})=>{
+        if(data['nuevo_porc_real']) this.tareas.find(t=> t.id==id).porc_real =data['nuevo_porc_real'];
         this.semanasDialog = false;
         this.success = true;
         this.messageSuccess = "Porcentaje de avance actualizado correctamente";
        }).catch(err=>{
+         console.error(err);
           this.error = true;
           this.messageError = "Porcentaje de avance no pudo actualizarse, intentelo nuevamente";
       });
