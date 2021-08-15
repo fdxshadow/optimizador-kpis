@@ -3,6 +3,8 @@
      <v-chip text-color="white" class="text-md-body-1" color="orange">Semana Actual: {{semanaActual}}</v-chip>
      <v-chip text-color="white" class="text-md-body-1" color="blue">Avance Real: {{avance_proyecto}}%</v-chip>
      <v-chip text-color="white" class="text-md-body-1" color="primary">Avance Esperado: {{avance_esperado}}%</v-chip>
+      <v-chip text-color="white" class="text-md-body-1" color="primary">Area Responsable: {{area_responsable}}%</v-chip>
+
 </div>
 </template>
 
@@ -12,7 +14,8 @@ export default {
         return {
             semanaActual:null,
             avance_proyecto:null,
-            avance_esperado:null
+            avance_esperado:null,
+            area_responsable:null
     }
   },
   created(){
@@ -21,6 +24,8 @@ export default {
       }else{
           this.semanaActual = this.$store.state.semanaActual;
           this.avance_proyecto = this.$store.state.avance_proyecto;
+          this.avance_esperado = this.$store.state.avance_esperado;
+          this.area_responsable = this.$store.state.area_responsable;
       }
   },
   methods:{
@@ -29,10 +34,11 @@ export default {
               this.semanaActual = resp.data.semanaActual;
               this.avance_proyecto = resp.data.porc_avance;
               this.avance_esperado = resp.data.porc_prog
+              this.area_responsable = resp.data.area_responsable;
               this.$store.state.semanaActual = resp.data.semanaActual;
               this.$store.state.avance_proyecto=resp.data.porc_avance;
-              this.$store.state.avance_esperado=resp.data.porc_prog
-
+              this.$store.state.avance_esperado=resp.data.porc_prog;
+              this.$store.state.area_responsable=resp.data.area_responsable;
           }).catch(e=>{
               console.log(e.getMessage());
           });

@@ -2,14 +2,23 @@
   <v-app>
      <semana-act-porcent />
       <v-container>
-     <v-data-table
+    <!-- <v-data-table
      mt-2
     :headers="headers"
     :items="tareas"
     :items-per-page="itemsPerPage"
+    group-by="resumen"
     @click:row="listarSemanasByTarea"
     class="elevation-1"
-  >
+  >-->
+
+  <v-data-table
+     mt-2
+    :headers="headers"
+    :items="tareas"
+    :items-per-page="itemsPerPage"
+    group-by="resumen"
+    class="elevation-1">
 
   <template v-slot:item.avance_semana="props">
         <v-edit-dialog
@@ -118,7 +127,7 @@ export default {
   components: { SemanaActPorcent },
   data (){
     return {
-      headers:[{text:'Nombre', value:'nombre'},{text:'Fecha Inicio', value:'comienzo'},{text:'Fecha Fin',value:'fin'},{text:'% Esperado', value:'porc_esperado'},{text:'% Real', value:'porc_real'},{text:'Avance Semana Actual', value:'avance_semana'}],
+      headers:[{text:'Nombre', value:'nombre'},{text:'Fecha Inicio', value:'comienzo'},{text:'Fecha Fin',value:'fin'},{text:'% Esperado', value:'porc_esperado'},{text:'% Real', value:'porc_real'},{text:'Avance Semana Actual', value:'avance_semana'}, {text:"Tarea Resumen", value:'resumen'}],
       headerSemana:[{text:'semana', value: 'semana'},{text:'Avance Esperado',value:'carga_trabajo'},{text:'Avance Real', value:'trabajo_efectivo'}],
       semanasDialog:false,
       //trabajoEfecMom
@@ -173,10 +182,9 @@ export default {
         this.semanasDialog = false;
         this.success = true;
         this.messageSuccess = "Porcentaje de avance actualizado correctamente";
-       }).catch(err=>{
-         console.error(err);
+       }).catch(({response})=>{
           this.error = true;
-          this.messageError = "Porcentaje de avance no pudo actualizarse, intentelo nuevamente";
+          this.messageError = response.data.message;
       });
     },
     agregarSemana(){
