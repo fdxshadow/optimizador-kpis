@@ -3,7 +3,7 @@
      <v-chip text-color="white" class="text-md-body-1" color="orange">Semana Actual: {{semanaActual}}</v-chip>
      <v-chip text-color="white" class="text-md-body-1" color="blue">Avance Real: {{avance_proyecto}}%</v-chip>
      <v-chip text-color="white" class="text-md-body-1" color="primary">Avance Esperado: {{avance_esperado}}%</v-chip>
-      <v-chip text-color="white" class="text-md-body-1" color="primary">Area Responsable: {{area_responsable}}%</v-chip>
+      <v-chip text-color="white" class="text-md-body-1" color="primary">Area Responsable: {{area_responsable}}</v-chip>
 
 </div>
 </template>

@@ -17,7 +17,7 @@
     :headers="headers"
     :items="tareas"
     :items-per-page="itemsPerPage"
-    group-by="resumen"
+    :item-class="itemIsResumen"
     class="elevation-1">
 
   <template v-slot:item.avance_semana="props">
@@ -127,7 +127,7 @@ export default {
   components: { SemanaActPorcent },
   data (){
     return {
-      headers:[{text:'Nombre', value:'nombre'},{text:'Fecha Inicio', value:'comienzo'},{text:'Fecha Fin',value:'fin'},{text:'% Esperado', value:'porc_esperado'},{text:'% Real', value:'porc_real'},{text:'Avance Semana Actual', value:'avance_semana'}, {text:"Tarea Resumen", value:'resumen'}],
+      headers:[{text:'Nombre', value:'nombre'},{text:'Fecha Inicio', value:'comienzo'},{text:'Fecha Fin',value:'fin'},{text:'% Esperado', value:'porc_esperado'},{text:'% Real', value:'porc_real'},{text:'Avance Semana Actual', value:'avance_semana'}],
       headerSemana:[{text:'semana', value: 'semana'},{text:'Avance Esperado',value:'carga_trabajo'},{text:'Avance Real', value:'trabajo_efectivo'}],
       semanasDialog:false,
       //trabajoEfecMom
@@ -152,7 +152,7 @@ export default {
   methods:{
     getTareasByArea(){
       this.$axios.get(`/tareas/area/${this.$store.state.auth.user.area_responsable}/${this.$store.state.semanaActual}`).then(resp=>{
-        console.log(resp.data);
+        //console.log(resp.data);
         this.tareas = resp.data;
       }).catch(err=>{
         console.log(err.response.data.message);
@@ -190,9 +190,20 @@ export default {
     agregarSemana(){
       let ultima_semana = this.semanasByTarea[this.semanasByTarea.length - 1]
       this.semanasByTarea.push({id:null,semana:ultima_semana.semana+1,trabajo_efectivo:0,tarea_id:this.lastRow.id});
-    }
-
+    },
+  itemIsResumen(item){
+    if(item.isResumen === 1) return 'rowResumen';
   }
     
-}
+}}
 </script>
+
+
+<style>
+.rowResumen {
+  background-color: #4893ac !important;
+}
+
+
+
+</style>
