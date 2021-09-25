@@ -108,6 +108,7 @@ export default {
   },
   methods:{
     getDataCurvaS(){
+      console.log("semana seleccionado", this.semanaSeleccionada);
       console.log("se ejecuta");
       this.$axios.get(`/planificacion/curva_s/${this.obraSeleccionada}`).then(resp=>{
         let data = resp.data;
